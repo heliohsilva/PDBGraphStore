@@ -1,0 +1,11 @@
+dataset,before,after
+bcl_ppigremlin,41.77,33.41
+ligand_BME,132.74,128.17
+ligand_PLP,
+ligand_PO4,1193.03,989.82
+metals_CO,
+nucleic_dna,
+nucleotides_FAD,
+nucleotides_NAD,
+nucleotides_UDP,
+soybean_ppigremlin,
