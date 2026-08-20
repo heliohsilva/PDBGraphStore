@@ -1,5 +1,5 @@
 import networkx as nx
-from pyroaring import BitMap64, BitMap
+from pyroaring import BitMap64
 from bidict import bidict
 import numpy as np
 import pandas as pd
@@ -148,7 +148,7 @@ class PDBGraphStore:
             attr_key_id = self.__body_parts["edge_attr_keys"].index(attr_key)
             attr_value_id = self.__body_parts["edge_attr_values"][attr_value]
 
-            distance_keyvalue_mapping_list.append(attr_key_id)
+            # distance_keyvalue_mapping_list.append(attr_key_id)
             distance_keyvalue_mapping_list.append(attr_value_id)
 
             return distance_keyvalue_mapping_list
@@ -159,7 +159,7 @@ class PDBGraphStore:
             attr_key = "kind"
             attr_key_id = self.__body_parts["edge_attr_keys"].index(attr_key)
 
-            kind_keyvalue_mapping_list.append(attr_key_id)
+            # kind_keyvalue_mapping_list.append(attr_key_id)
 
             for kind in kinds:
                 attr_value = kind
@@ -241,11 +241,11 @@ class PDBGraphStore:
                 self.__set_config(config)
 
             for pdb_code, pdb_graph in pdb_to_insert.items():
-                pdb_code = pdb_code.upper()
+                pdb_code = pdb_code.lower()
 
                 if pdb_code in self.__body_parts["pdb_code_to_id"]:
                     print(f'pdb {pdb_code} is already stored')
-                    pass
+                    continue
                 self.__body_parts["pdb_code_to_id"][pdb_code] = len(self.__body_parts["pdb_code_to_id"])
                 
                 pdb_id = self.__body_parts["pdb_code_to_id"][pdb_code]
@@ -314,7 +314,7 @@ class PDBGraphStore:
             attr_key = "kind"
             kind_list = []
 
-            for i in range(1, len(attributes)):
+            for i in range(len(attributes)):
                 attr_value_id = attributes[i]
                 kind_value = self.__body_parts["edge_attr_values"].inverse[attr_value_id]
                 kind_list.append(kind_value)
@@ -325,7 +325,7 @@ class PDBGraphStore:
 
         def __reconstruct_edge_distance(attributes: list, g: nx.Graph, edge_label: str):
             attr_key = "distance"
-            attr_value_id = attributes[1]
+            attr_value_id = attributes[0]
 
             distance_value = self.__body_parts["edge_attr_values"].inverse[attr_value_id]
 
@@ -343,13 +343,13 @@ class PDBGraphStore:
                 edge_id = self.__body_parts["edge_label_to_edge_id"][self.__edge_label_undirected(edge_label)]
                 attributes = self.__body_parts["edge_local_attr_keyvalue_mapping"][(pdb_id, edge_id)]
 
-                __reconstruct_edge_kinds(attributes[2:], extracted_graph, edge_label)
-                __reconstruct_edge_distance(attributes[:2], extracted_graph, edge_label)
+                __reconstruct_edge_kinds(attributes[1:], extracted_graph, edge_label)
+                __reconstruct_edge_distance(attributes[:1], extracted_graph, edge_label)
         
         def extract():
-            pdb_upper = pdb_to_extract.upper()
+            pdb = pdb_to_extract.lower()
             extracted_graph = nx.Graph()
-            pdb_id = self.__body_parts["pdb_code_to_id"][pdb_upper]
+            pdb_id = self.__body_parts["pdb_code_to_id"][pdb]
 
             nodes = [self.__body_parts["node_label_to_node_id"].inverse[node_id] for node_id in self.__body_parts["pdb_id_to_nodes"][pdb_id]]
             edges = [self.__body_parts["edge_label_to_edge_id"].inverse[edge_id] for edge_id in self.__body_parts["pdb_id_to_edges"][pdb_id]]
@@ -362,7 +362,7 @@ class PDBGraphStore:
 
             extracted_graph.graph['config'] = self.get_config()
             
-            extracted_graph.graph['pdb_code'] = pdb_upper
+            extracted_graph.graph['pdb_code'] = pdb
 
             return extracted_graph
         
