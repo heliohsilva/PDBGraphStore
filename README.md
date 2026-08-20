@@ -46,10 +46,20 @@ min_max_results/
 
 results/
 ├── Results generated from experiments 1–6
+├──── * Experiments 1 deserves to be mentioned. The data used as `compression_ratio` was extracted from there. * 
 
 src/
-├── Source code of the library
+├── pkg
+├── ├── Source code of the library
 ├── Experiment execution scripts
+├── Graphein_notebooks
+├── ├── baseline
+├── ├── GNN_scope
+├── ├── tdc_developability
+├── PDBGraphStore_notebooks
+├── ├── baseline
+├── ├── GNN_scope
+├── ├── tdc_developability
 
 times/
 ├── Execution time measurements and profiling data
@@ -59,62 +69,6 @@ build
 
 lab
 ├── Script to launch Jupyter Lab
-```
-
----
-
-# Running Experiments
-
-The project uses Docker Compose for reproducible execution.
-
-## Running a Single Experiment
-
-To execute a specific experiment:
-
-1. Uncomment the desired experiment inside:
-
-```text
-src/compress/main.py
-```
-
-2. Set the dataset name in:
-
-```text
-./docker-compose.yaml
-```
-
-using the `DATASET` environment variable.
-
-3. Execute:
-
-```bash
-sh build
-```
-
----
-
-## Running Experiments for All Datasets
-
-To execute the experiment pipeline for all datasets inside `./data/`:
-
-1. In `docker-compose.yml`:
-
-* Uncomment:
-
-```yaml
-command: bash run_metadata_with_different_datasets.sh
-```
-
-* Comment:
-
-```yaml
-command: python src/compress/main.py
-```
-
-2. Execute:
-
-```bash
-sh build
 ```
 
 ---
@@ -137,7 +91,7 @@ http://127.0.0.1:8888/lab/tree/src
 
 The environment is already configured to interact with the PDB Graph Store library and datasets.
 
-A notebook named lab.ipynb is included with the project and contains example workflows demonstrating how to use the compression and graph manipulation features provided by the library.
+A notebook named lab.ipynb is included with the project at src/ and contains example workflows demonstrating how to use the compression and graph manipulation features provided by the library.
 
 ---
 

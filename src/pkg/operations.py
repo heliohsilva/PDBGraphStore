@@ -1,5 +1,4 @@
-from PDBGraphStore import PDBGraphStore
-from concurrent.futures import ProcessPoolExecutor, as_completed
+from pkg.PDBGraphStore import PDBGraphStore
 
 def remove_graph_from_store(pdbs_to_remove: list, pdb_store: PDBGraphStore) -> PDBGraphStore:
     pdbs_to_remove_set = set(pdbs_to_remove)
@@ -44,9 +43,7 @@ def config_to_string(d):
 
 def merge_graph_stores(graph_stores: list) -> PDBGraphStore:
     configs = [s.get_config() for s in graph_stores]
-    
     configs = set([config_to_string(c) for c in configs])
-    print(configs)
 
     if len(configs) > 1:
         print("Not allowed to merge PDBGraphStore's with heterogeneous configs")
@@ -62,14 +59,3 @@ def merge_graph_stores(graph_stores: list) -> PDBGraphStore:
                 main_pdbs.add(pdb_code)
 
     return main_graph_store
-
-def extract_pdb_graphs_multiprocessing(pdb_store: PDBGraphStore, pdb_codes: list, num_cpus=4) -> list:
-    with ProcessPoolExecutor(max_workers=num_cpus) as executor:
-        futures = [executor.submit(pdb_store.extract, pdb_code) for pdb_code in pdb_codes]
-
-        extracted_graphs = []
-
-        for future in as_completed(futures):
-            extracted_graphs.append(future.result())
-
-    return extracted_graphs
