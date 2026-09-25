@@ -1,4 +1,4 @@
-import os, metadata, time, traceback, random
+import os, time, traceback, random
 
 import numpy as np
 import pandas as pd
@@ -7,9 +7,9 @@ import networkx as nx
 import pickle as pk
 
 import Builder
-from MemoryMeasuring import MemoryMeasuring
-from PDBGraphStore import PDBGraphStore
-import edge_functions_Model as edgeModel
+from pkg.MemoryMeasuring import MemoryMeasuring
+from pkg.PDBGraphStore import PDBGraphStore
+import pkg.edge_functions_Model as edgeModel
 from operations import *
 
 from graphein.protein.config import ProteinGraphConfig

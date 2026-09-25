@@ -103,7 +103,7 @@ class PDBGraphStore:
     
     def __get_one_hot_by_residue(self, residue_name: str):
         '''
-        retorna o one_hot de um residuo especifico
+        retorna o one_hot array de um residuo especifico
         '''
 
         ONE_HOT = {
