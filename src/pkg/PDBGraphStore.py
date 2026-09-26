@@ -97,7 +97,7 @@ class PDBGraphStore:
 
         m = pd.Series(MEILER[residue_name],
                             name=residue_name,
-                            index=[f'dim_{x}' for x in [1,2,3,4,5,6,7]])
+                            index=[f'dim_{x}' for x in [1,2,3,4,5,6,7]], dtype='float32')
 
         return m
     
